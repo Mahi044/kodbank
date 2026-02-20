@@ -9,8 +9,15 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
-    origin: '*', // Allow all origins for Vercel deployment
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        // or any origin (reflecting it) to support true credentials
+        callback(null, true);
+    },
     credentials: true
 }));
 
