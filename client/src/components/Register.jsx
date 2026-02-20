@@ -21,6 +21,7 @@ const Register = () => {
         phone: ''
     });
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,6 +29,8 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError('');
         try {
             // Using configured api instance
             await api.post('/auth/register', formData);
@@ -36,6 +39,7 @@ const Register = () => {
             console.error(err);
             const msg = err.response?.data?.message || err.message || 'Registration failed';
             setError(msg);
+            setIsLoading(false);
         }
     };
 
@@ -73,7 +77,14 @@ const Register = () => {
                         <label className="form-label">Phone</label>
                         <input type="text" name="phone" required className="form-input" onChange={handleChange} />
                     </div>
-                    <button type="submit" className="btn-primary" style={{ width: '100%' }}>Register</button>
+                    <button
+                        type="submit"
+                        className="btn-primary"
+                        style={{ width: '100%', opacity: isLoading ? 0.7 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Creating Account...' : 'Register'}
+                    </button>
                 </form>
                 <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
                     Already have an account? <Link to="/login">Login here</Link>

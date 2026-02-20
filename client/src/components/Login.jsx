@@ -9,6 +9,7 @@ const Login = () => {
         password: ''
     });
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,6 +17,8 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError('');
         try {
             // /auth/login as per vite proxy
             await api.post('/auth/login', formData);
@@ -23,6 +26,7 @@ const Login = () => {
             navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
+            setIsLoading(false);
         }
     };
 
@@ -50,7 +54,14 @@ const Login = () => {
                     <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
                         <Link to="/forgot-password" style={{ fontSize: '0.85rem' }}>Forgot Password?</Link>
                     </div>
-                    <button type="submit" className="btn-primary" style={{ width: '100%' }}>Login</button>
+                    <button
+                        type="submit"
+                        className="btn-primary"
+                        style={{ width: '100%', opacity: isLoading ? 0.7 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
                 </form>
                 <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
                     Don't have an account? <Link to="/register">Register here</Link>
