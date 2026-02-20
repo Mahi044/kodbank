@@ -61,15 +61,19 @@ const login = async (req, res) => {
         );
 
         // Send Cookie
+        // NOTE: In Vercel (HTTPS), 'secure' must be true.
+        // 'SameSite' should be 'None' if cross-site, or 'Lax' if same-site.
+        // Since we proxy, 'Lax' is usually fine, but 'None' + 'Secure' is safest for mixed contents.
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false, // Set to true in production with HTTPS
+            secure: true, // Always true for Vercel deployment
+            sameSite: 'None',
             maxAge: 3600000 // 1 hour
         });
 
         res.json({ message: 'Login successful', role: user.role });
     } catch (error) {
-        console.error(error);
+        console.error("Login Error:", error);
         res.status(500).json({ message: 'Server error during login' });
     }
 };

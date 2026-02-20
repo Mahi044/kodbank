@@ -57,9 +57,9 @@ const sendOtp = async (req, res) => {
             text = `Welcome to Kodbank! Your verification code is: ${otp}`;
         }
 
-        // Send Email in background (Fire & Forget for speed)
-        sendEmail(email, subject, text)
-            .catch(err => console.error("Background Email Error:", err.message));
+        // Send Email (MUST await in Serverless to ensure delivery)
+        await sendEmail(email, subject, text);
+        console.log("OTP Email Sent Successfully");
 
         res.json({ message: 'OTP sent successfully' });
     } catch (error) {
