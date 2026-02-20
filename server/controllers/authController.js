@@ -8,10 +8,21 @@ const register = async (req, res) => {
     const balance = 100000;
 
     try {
-        // Check if user exists
-        const [existing] = await pool.query('SELECT * FROM KoduSer WHERE username = ? OR email = ?', [username, email]);
+        // Check if user exists (UID, Username, Email)
+        const [existing] = await pool.query('SELECT * FROM KoduSer WHERE uid = ? OR username = ? OR email = ?', [uid, username, email]);
+
         if (existing.length > 0) {
-            return res.status(400).json({ message: 'User already exists' });
+            const user = existing[0];
+            if (user.uid == uid) {
+                return res.status(400).json({ message: 'User ID already exists' });
+            }
+            if (user.username === username) {
+                return res.status(400).json({ message: 'Username already taken' });
+            }
+            if (user.email === email) {
+                return res.status(400).json({ message: 'Email already registered' });
+            }
+            return res.status(400).json({ message: 'User details already exist' });
         }
 
         // Hash password
