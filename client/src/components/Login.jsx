@@ -33,8 +33,15 @@ const Login = () => {
                 {error && <p style={{ color: '#ef4444', textAlign: 'center' }}>{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label className="form-label">Username</label>
-                        <input type="text" name="username" required className="form-input" onChange={handleChange} />
+                        <label className="form-label">Username or Email</label>
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Enter your username or email"
+                            required
+                            className="form-input"
+                            onChange={handleChange}
+                        />
                     </div>
                     <div className="form-group">
                         <label className="form-label">Password</label>

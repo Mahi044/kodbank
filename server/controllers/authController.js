@@ -34,7 +34,8 @@ const login = async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const [users] = await pool.query('SELECT * FROM KoduSer WHERE username = ?', [username]);
+        // Allow login with Username OR Email
+        const [users] = await pool.query('SELECT * FROM KoduSer WHERE username = ? OR email = ?', [username, username]);
         if (users.length === 0) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
