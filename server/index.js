@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173', // Vite default port
+    origin: '*', // Allow all origins for Vercel deployment
     credentials: true
 }));
 
@@ -34,6 +34,10 @@ app.use('/auth', authRoutes);
 app.use('/auth', otpRoutes); // Mounts /auth/send-otp, etc.
 app.use('/api', balanceRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
