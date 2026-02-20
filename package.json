@@ -2,7 +2,7 @@
     "name": "kodbank-monorepo",
     "version": "1.0.0",
     "scripts": {
-        "vercel-build": "cd client && npm install && npm run build"
+        "vercel-build": "cd client && npm install && npm run build && cd .. && rm -rf dist && mv client/dist dist"
     },
     "dependencies": {
         "concurrently": "^8.0.0",
