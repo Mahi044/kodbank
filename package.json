@@ -2,7 +2,7 @@
     "name": "kodbank-monorepo",
     "version": "1.0.0",
     "scripts": {
-        "build": "cd client && npm install && npm run build && cd .. && rm -rf dist && mv client/dist dist"
+        "build": "cd client && npm install && npm run build && cd .. && rm -rf public && mv client/dist public"
     },
     "dependencies": {
         "concurrently": "^8.0.0",

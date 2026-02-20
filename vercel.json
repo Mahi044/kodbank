@@ -9,16 +9,8 @@
             "destination": "/api/index.js"
         },
         {
-            "source": "/assets/(.*)",
-            "destination": "/dist/assets/$1"
-        },
-        {
-            "source": "/favicon.ico",
-            "destination": "/dist/favicon.ico"
-        },
-        {
             "source": "/(.*)",
-            "destination": "/dist/index.html"
+            "destination": "/index.html"
         }
     ]
 }
