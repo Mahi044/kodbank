@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const [balance, setBalance] = useState(null);
+    const [userProfile, setUserProfile] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -36,9 +37,11 @@ const Dashboard = () => {
         setLoading(true);
         setError('');
         try {
-            // /api/balance logic
-            const response = await api.get('/api/balance');
-            setBalance(response.data.balance);
+            // Fetch Profile (includes balance)
+            const profileRes = await api.get('/api/profile');
+            setUserProfile(profileRes.data);
+            setBalance(profileRes.data.balance);
+
             triggerConfetti();
         } catch (err) {
             console.error(err);
@@ -61,8 +64,52 @@ const Dashboard = () => {
 
     return (
         <div className="page-container" style={{ flexDirection: 'column' }}>
-            <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-                <button onClick={handleLogout} className="btn-primary" style={{ background: 'transparent', border: '1px solid var(--glass-border)' }}>
+            {/* Top Right Profile Section */}
+            <div style={{
+                position: 'absolute',
+                top: '1.5rem',
+                right: '1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                zIndex: 10
+            }}>
+                {userProfile.username && (
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        padding: '8px 16px',
+                        borderRadius: '50px',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid var(--glass-border)'
+                    }}>
+                        {/* Avatar / Logo */}
+                        <div style={{
+                            width: '35px',
+                            height: '35px',
+                            borderRadius: '50%',
+                            background: 'var(--accent)',
+                            color: '#fff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 'bold',
+                            fontSize: '1.1rem'
+                        }}>
+                            {userProfile.username.charAt(0).toUpperCase()}
+                        </div>
+
+                        {/* User Details */}
+                        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
+                            <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#fff' }}>{userProfile.username}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>UID: {userProfile.uid}</span>
+                        </div>
+                    </div>
+                )}
+
+                <button onClick={handleLogout} className="btn-primary" style={{ background: 'transparent', border: '1px solid var(--glass-border)', padding: '8px 16px' }}>
                     Logout
                 </button>
             </div>
