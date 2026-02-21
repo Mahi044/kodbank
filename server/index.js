@@ -36,10 +36,12 @@ app.get('/', (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 const balanceRoutes = require('./routes/balanceRoutes');
 const otpRoutes = require('./routes/otpRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/auth', otpRoutes); // Mounts /auth/send-otp, etc.
 app.use('/api', balanceRoutes);
+app.use('/api', chatRoutes); // Mounts /api/chat
 
 if (require.main === module) {
     app.listen(PORT, () => {

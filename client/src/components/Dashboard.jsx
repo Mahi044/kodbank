@@ -6,6 +6,7 @@ import DashboardHeader from './DashboardHeader';
 import SummaryCards from './SummaryCards';
 import AnalyticsSection from './AnalyticsSection';
 import TransactionsTable from './TransactionsTable';
+import ChatWidget from './ChatWidget';
 
 const Dashboard = () => {
     const [balance, setBalance] = useState(null);
@@ -305,6 +306,9 @@ const Dashboard = () => {
                     to { transform: rotate(360deg); }
                 }
             `}</style>
+
+            {/* AI Chat Assistant */}
+            <ChatWidget />
         </div>
     );
 };
